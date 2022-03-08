@@ -44,24 +44,15 @@ if(isset($_POST['submit'])){
 	$login_email = $_POST['email'];
 	$login_pass = $_POST['pass'];
 
-	$validation_query = "SELECT * FROM users WHERE users_email = '$login_email' AND users_pass = '$login_pass'";
-	$validation_result = mysqli_query($connection, $validation_query);
+	echo mysqli_real_escape_string($connection, $login_email);
+}
+?>
 
-	if(mysqli_num_rows($validation_result) >= 1){
-		// header('location: index.php');
-		echo "ok";
-	}else{
-		?>
 <br>
 <div class="cus_mess red">
 	<p>&#9888; User validation failed. Please try again.</p>
 </div>
 <br>
-		<?php
-	}
-}
-?>
-
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username or email">
 					<input class="input100" type="text" name="email" placeholder="Enter your email">
 					<span class="focus-input100"></span>

@@ -14,8 +14,4 @@ if(!$connection){
     $login_session_user_id = 1;
 }
 
-// function escapeInjection($query){
-//     echo str_replace("'", "'/", $query);
-// }
-
 ?>
