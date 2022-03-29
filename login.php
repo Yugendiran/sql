@@ -49,6 +49,7 @@ if(isset($_POST['submit'])){
 
 	if(mysqli_num_rows($validation_result) >= 1){
 		// header('location: index.php');
+		// ' OR '1=1
 		echo "ok";
 	}else{
 		?>

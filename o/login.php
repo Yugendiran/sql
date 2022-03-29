@@ -40,26 +40,59 @@ include "db/conn.php";
 					Sign In
 				</span>
 <?php
+
+// ' OR '1=1
+
 if(isset($_POST['submit'])){
 	$login_email = $_POST['email'];
 	$login_pass = $_POST['pass'];
 
-	echo mysqli_real_escape_string($connection, $login_email);
+	$login_email = escapeInjection($login_email);
+	$login_pass = escapeInjection($login_pass);
+
+	$select_user_query = "SELECT * FROM users WHERE users_email = '$login_email'";
+	$select_user_result = mysqli_query($connection, $select_user_query);
+	$select_user_count = mysqli_num_rows($select_user_result);
+
+	if($select_user_count >= 1){
+		while($row = mysqli_fetch_assoc($select_user_result)){
+			$db_users_id = $row['users_id'];
+			$db_users_name = $row['users_name'];
+			$db_users_email = $row['users_email'];
+			$db_users_pass = $row['users_pass'];
+		}
+
+		if($login_pass == $db_users_pass){
+			echo "ok";
+		}else{
+			?>
+<br>
+<div class="cus_mess red">
+	<p>&#9888; Password Incorrect. Try again.</p>
+</div>
+<br>
+			<?php
+		}
+	}else{
+		?>
+<br>
+<div class="cus_mess red">
+	<p>&#9888; There is no such user with this email. Try Registration.</p>
+</div>
+<br>
+		<?php
+	}
 }
 ?>
 
-<br>
-<div class="cus_mess red">
-	<p>&#9888; User validation failed. Please try again.</p>
-</div>
-<br>
+
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username or email">
-					<input class="input100" type="text" name="email" placeholder="Enter your email">
+					<input class="input100" type="text" name="email" placeholder="Enter your email" required>
 					<span class="focus-input100"></span>
 				</div>
 
 				<div class="wrap-input100 validate-input m-b-25" data-validate = "Enter password">
-					<input class="input100" type="password" name="pass" placeholder="Enter your password">
+					<input class="input100" type="password" name="pass" placeholder="Enter your password" required>
 					<span class="focus-input100"></span>
 				</div>
 
