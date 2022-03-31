@@ -1,3 +1,20 @@
+<?php
+include 'db/conn.php';
+
+if(isset($_GET['pid'])){
+    $get_product_id = $_GET['pid'];
+    // INSERT INTO product_insight(product_insight_pid) VALUES($get_product_id)
+    $select_product_details_query = "SELECT * FROM product_details WHERE product_details_id = $get_product_id";
+    $select_product_details_result = mysqli_query($connection, $select_product_details_query);
+    while($row = mysqli_fetch_assoc($select_product_details_result)){
+        $product_details_id = $row['product_details_id'];
+        $product_details_name = $row['product_details_name'];
+        $product_details_price = $row['product_details_price'];
+    }
+}else{
+    header('location: index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -42,44 +59,9 @@
         <!-- Top bar End -->
         
         <!-- Nav Bar Start -->
-        <div class="nav">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-                    <a href="#" class="navbar-brand">MENU</a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="product-list.html" class="nav-item nav-link">Products</a>
-                            <a href="product-detail.html" class="nav-item nav-link active">Product Detail</a>
-                            <a href="cart.html" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.html" class="nav-item nav-link">My Account</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-                                <div class="dropdown-menu">
-                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                    <a href="login.html" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.html" class="dropdown-item">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">Login</a>
-                                    <a href="#" class="dropdown-item">Register</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
+        <?php
+include 'includes/nav.php';
+        ?>
         <!-- Nav Bar End -->      
         
         <!-- Bottom Bar Start -->
@@ -155,7 +137,7 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="product-content">
-                                        <div class="title"><h2>Product Name</h2></div>
+                                        <div class="title"><h2><?php echo $product_details_name; ?></h2></div>
                                         <div class="ratting">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -165,7 +147,8 @@
                                         </div>
                                         <div class="price">
                                             <h4>Price:</h4>
-                                            <p>$99 <span>$149</span></p>
+                                            <!-- <p>$99 <span>$149</span></p> -->
+                                            <p>$<?php echo $product_details_price; ?></p>
                                         </div>
                                         <div class="quantity">
                                             <h4>Quantity:</h4>
