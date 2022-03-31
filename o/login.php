@@ -50,6 +50,8 @@ if(isset($_POST['submit'])){
 	$login_email = escapeInjection($login_email);
 	$login_pass = escapeInjection($login_pass);
 
+	// echo $login_pass;
+
 	$select_user_query = "SELECT * FROM users WHERE users_email = '$login_email'";
 	$select_user_result = mysqli_query($connection, $select_user_query);
 	$select_user_count = mysqli_num_rows($select_user_result);
@@ -132,7 +134,7 @@ if(isset($_POST['submit'])){
 <!--===============================================================================================-->
 	<script src="vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<script src="js/main2.js"></script>
 
 </body>
 </html>

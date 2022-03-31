@@ -15,7 +15,6 @@ if(!$connection){
 }
 
 function escapeInjection($query){
-
     $split = str_split($query);
     $error_count = array();
     $break_input = array();
@@ -45,6 +44,7 @@ function escapeInjection($query){
 
     if(count($error_count) >= 1){
         echo "user blocked";
+        die;
     }
 
     return $fix_input;
