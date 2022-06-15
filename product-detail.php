@@ -1,3 +1,26 @@
+<?php
+
+include "db/conn.php";
+
+if(isset($_GET['pid'])){
+    $pid = $_GET['pid'];
+
+    $select_product_query = "SELECT * FROM products WHERE product_id = $pid";
+    $select_product_result = mysqli_query($connection, $select_product_query);
+    $product_count = mysqli_num_rows($select_product_result);
+    if($product_count < 1){
+        header('location: index.php');
+    }else{
+        while($row = mysqli_fetch_assoc($select_product_result)){
+            $db_product_id = $row['product_id'];
+            $db_product_name = $row['product_name'];
+            $db_product_price = $row['product_price'];
+        }
+    }
+}else{
+    header("location: index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -155,7 +178,7 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="product-content">
-                                        <div class="title"><h2>Product Name</h2></div>
+                                        <div class="title"><h2><?php echo $db_product_name; ?></h2></div>
                                         <div class="ratting">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -165,7 +188,7 @@
                                         </div>
                                         <div class="price">
                                             <h4>Price:</h4>
-                                            <p>$99 <span>$149</span></p>
+                                            <p><?php echo $db_product_price; ?></p>
                                         </div>
                                         <div class="quantity">
                                             <h4>Quantity:</h4>
@@ -194,7 +217,7 @@
                                         </div>
                                         <div class="action">
                                             <a class="btn" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a>
-                                            <a class="btn" href="#"><i class="fa fa-shopping-bag"></i>Buy Now</a>
+                                            <a class="btn" href="checkout.php?pid=<?php echo $db_product_id; ?>"><i class="fa fa-shopping-bag"></i>Buy Now</a>
                                         </div>
                                     </div>
                                 </div>

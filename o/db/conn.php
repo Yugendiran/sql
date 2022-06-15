@@ -56,14 +56,17 @@ function prevent_mode($fix_query,$pre_sec){
             alertBox("User terminated");
         }
     }else{
-        $prevent_query = "INSERT INTO prevent(prevent_time,prevent_attack, prevent_page, prevent_section) VALUES('$current_date', '$fix_query', '$curr_page_name', '$prevent_sec')";
-        $prevent_result = mysqli_query($connection, $prevent_query);
+        // $prevent_query = "INSERT INTO prevent(prevent_time,prevent_attack, prevent_page, prevent_section) VALUES('$current_date', '$fix_query', '$curr_page_name', '$prevent_sec')";
+        // $prevent_result = mysqli_query($connection, $prevent_query);
         
-        if(!$prevent_result){
-            alertBox("Something went wrong");
-        }else{
-            alertBox("Module Prevented");
-        }
+        // if(!$prevent_result){
+        //     alertBox("Something went wrong");
+        // }else{
+        //     alertBox("Module Prevented");
+        // }
+
+        alertBox("Module Prevented");
+
     }
 }
 
@@ -83,7 +86,7 @@ function escapeInjection($query, $sec){
     }
 
     $fix_input = implode($break_input);
-    $fix_input = str_replace("'", "./", $fix_input);
+    $fix_input = str_replace("'", "'/", $fix_input);
     $fix_input = str_replace("-", "-/", $fix_input);
     $fix_input = str_replace(";", ";/", $fix_input);
     $fix_input = str_replace("#", "#/", $fix_input);
