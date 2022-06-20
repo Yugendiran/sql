@@ -1,5 +1,11 @@
 <?php
 include "db/conn.php";
+
+if(isset($_GET['uid'])){
+    $uid = $_GET['uid'];
+}else{
+    header("location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -198,12 +204,22 @@ include "db/conn.php";
                             <div class="tab-pane fade" id="payment-tab" role="tabpanel" aria-labelledby="payment-nav">
                                 <h4>Payment Method</h4>
                                 <div class="row">
+                                    <?php
+$select_payment_modes_query = "SELECT * FROM payment_methods WHERE payment_methods_uid = $fetch_user_id";
+$select_payment_modes_result = mysqli_query($connection, $select_payment_modes_query);
+while($row = mysqli_fetch_assoc($select_payment_modes_result)){
+    $payment_methods_card_num = $row['payment_methods_card_num'];
+    $payment_methods_cname = $row['payment_methods_cname'];
+    $payment_methods_year = $row['payment_methods_year'];
+                                    ?>
                                     <div class="col-md-6">
-                                        <h5>Payment Address</h5>
-                                        <p>123 Payment Street, Los Angeles, CA</p>
-                                        <p>Mobile: 012-345-6789</p>
-                                        <button class="btn">Edit Address</button>
+                                        <h5><?php echo $payment_methods_cname; ?></h5>
+                                        <p><?php echo $payment_methods_card_num; ?></p>
+                                        <p><?php echo $payment_methods_year; ?></p>
                                     </div>
+                                    <?php
+}
+                                    ?>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">

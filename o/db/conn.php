@@ -41,6 +41,8 @@ function prevent_mode($fix_query,$pre_sec){
     $prevent_sec = $pre_sec;
     $curr_page_name = basename($_SERVER['PHP_SELF']);
 
+    // echo $fix_query;
+
     if(isset($_SESSION['sql_user_logino'])){
         global $login_sessiono_user_id;
 
@@ -53,21 +55,21 @@ function prevent_mode($fix_query,$pre_sec){
         if(!$block_user_result){
             alertBox("Something went wrong");
         }else{
+            alertBox("Module Prevented");
             alertBox("User terminated");
         }
     }else{
-        // $prevent_query = "INSERT INTO prevent(prevent_time,prevent_attack, prevent_page, prevent_section) VALUES('$current_date', '$fix_query', '$curr_page_name', '$prevent_sec')";
-        // $prevent_result = mysqli_query($connection, $prevent_query);
+        $prevent_query = "INSERT INTO prevent(prevent_time, prevent_attack, prevent_page, prevent_section) VALUES('$current_date', '$fix_query', '$curr_page_name', '$prevent_sec')";
+        $prevent_result = mysqli_query($connection, $prevent_query);
         
-        // if(!$prevent_result){
-        //     alertBox("Something went wrong");
-        // }else{
-        //     alertBox("Module Prevented");
-        // }
-
-        alertBox("Module Prevented");
-
+        if(!$prevent_result){
+            alertBox("Something went wrong");
+        }else{
+            alertBox("Module Prevented");
+        }
     }
+
+    die();
 }
 
 function escapeInjection($query, $sec){
@@ -75,8 +77,10 @@ function escapeInjection($query, $sec){
     $error_count = array();
     $break_input = array();
 
+    // alertBox($query);
+
     for($i = 0; $i < count($split); $i++){
-        $sql_keywords = "' - ; # / ! * , = ( )";
+        $sql_keywords = "' - ; # / ! * , = ( ) %";
 
         if(strpos($sql_keywords, $split[$i]) !== false){
             array_push($error_count, $split[$i]);
@@ -86,7 +90,7 @@ function escapeInjection($query, $sec){
     }
 
     $fix_input = implode($break_input);
-    $fix_input = str_replace("'", "'/", $fix_input);
+    $fix_input = str_replace("'", "/", $fix_input);
     $fix_input = str_replace("-", "-/", $fix_input);
     $fix_input = str_replace(";", ";/", $fix_input);
     $fix_input = str_replace("#", "#/", $fix_input);
@@ -97,6 +101,7 @@ function escapeInjection($query, $sec){
     $fix_input = str_replace("=", "=/", $fix_input);
     $fix_input = str_replace("(", "(/", $fix_input);
     $fix_input = str_replace(")", ")/", $fix_input);
+    $fix_input = str_replace("%", "%/", $fix_input);
 
     if(count($error_count) >= 3){
         prevent_mode($fix_input, $sec);

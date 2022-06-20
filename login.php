@@ -57,11 +57,16 @@ if(isset($_POST['submit'])){
 			$db_users_name = $row['users_name'];
 			$db_users_email = $row['users_email'];
 			$db_users_pass = $row['users_pass'];
+			$db_users_status = $row['users_status'];
 		}
 
-		$_SESSION['sql_user_loginf'] = $db_users_id;
+		if($db_users_status == 'activated'){
+			$_SESSION['sql_user_loginf'] = $db_users_id;
 
-		header('location: index.php');
+			header('location: index.php');
+		}else{
+			alertBox("User not activated");
+		}		
 	}else{
 		?>
 <br>
