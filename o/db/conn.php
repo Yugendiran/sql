@@ -77,8 +77,6 @@ function escapeInjection($query, $sec){
     $error_count = array();
     $break_input = array();
 
-    // alertBox($query);
-
     for($i = 0; $i < count($split); $i++){
         $sql_keywords = "' - ; # / ! * , = ( ) %";
 
